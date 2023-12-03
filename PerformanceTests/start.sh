@@ -1,2 +1,2 @@
 # apache-jmeter-5.6.2/bin/jmeter -n -t PerformanceTests/LoadTest.jmx -l PerformanceTests/results.jtl
-apache-jmeter-5.6.2/bin/jmeter -n -t PerformanceTests/LoadTest.jmx -e -o PerformanceTests/html-report -l PerformanceTests/html-report/results.jtl
+apache-jmeter-5.6.2/bin/jmeter -n -t PerformanceTests/LoadTest.jmx -e -o PerformanceTests/Results -l PerformanceTests/Results/results.jtl
