@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
 using DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+ThreadPool.SetMaxThreads(1, 1);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -14,11 +15,6 @@ builder.Services.AddDbContext<BooksDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("BooksDbConnectionString"));
 });
-
-// builder.Services.AddControllers().AddJsonOptions(options =>
-// {
-//     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-// });
 
 var app = builder.Build();
 
