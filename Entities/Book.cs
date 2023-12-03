@@ -19,6 +19,5 @@ public class Book
     public int AuthorId { get; set; }
 
     [ForeignKey(nameof(AuthorId))]
-    public Author Author { get; set; }
+    public Author Author { get; set; } = null!;
 }
-    

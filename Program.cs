@@ -15,10 +15,10 @@ builder.Services.AddDbContext<BooksDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("BooksDbConnectionString"));
 });
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-});
+// builder.Services.AddControllers().AddJsonOptions(options =>
+// {
+//     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+// });
 
 var app = builder.Build();
 

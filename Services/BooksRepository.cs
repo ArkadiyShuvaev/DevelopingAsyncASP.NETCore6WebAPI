@@ -13,6 +13,11 @@ namespace Services
             _context = context;
         }
 
+        public IEnumerable<Book> GetAll()
+        {
+            return _context.Books.Include(b => b.Author);
+        }
+
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
             return await _context.Books.Include(b => b.Author)
@@ -23,6 +28,12 @@ namespace Services
         {
             return await _context.Books.Include(b => b.Author)
                                        .FirstOrDefaultAsync(b => b.Id == id);
+        }
+
+        public Book? GetBook(int id)
+        {
+            return _context.Books.Include(b => b.Author)
+                                 .FirstOrDefault(b => b.Id == id);
         }
     }
 }

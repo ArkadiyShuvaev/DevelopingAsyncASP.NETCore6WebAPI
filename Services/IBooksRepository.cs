@@ -14,9 +14,14 @@ namespace Services
         /// </summary>
         Task<Book?> GetAsync(int id);
 
-        // Task<Book?> GetBookAsync(int id);
-        // Task<Book?> AddBookAsync(Book book);
-        // Task<Book?> UpdateBookAsync(Book book);
-        // Task<Book?> DeleteBookAsync(int id);
+        /// <summary>
+        /// Returns a collection of books.
+        /// </summary>
+        IEnumerable<Book> GetAll();
+
+        /// <summary>
+        /// Returns a book by id.
+        /// </summary>
+        Book? GetBook(int id);
     }
 }

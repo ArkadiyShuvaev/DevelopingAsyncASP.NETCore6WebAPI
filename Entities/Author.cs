@@ -15,5 +15,5 @@ public class Author
 
     public required string LastName { get; set; }
 
-    public ICollection<Book>? Books { get; set; }
+    //public ICollection<Book>? Books { get; set; }
 }
