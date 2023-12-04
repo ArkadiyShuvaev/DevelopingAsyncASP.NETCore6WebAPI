@@ -1,4 +1,5 @@
 using Entities;
+using Filters;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -23,6 +24,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<Book>> GetAsync(int id)
     {
         var book = await _booksRepository.GetAsync(id);
