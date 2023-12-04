@@ -25,7 +25,16 @@
     "rm apache-jmeter-5.6.2.zip",
 		"dotnet tool install --global dotnet-ef --version 7.0.14",
 		"dotnet restore"
-	]
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-dotnettools.csdevkit",
+				"ms-dotnettools.csharp",
+				"ms-dotnettools.vscode-dotnet-runtime"
+			]
+		}
+	}
 
 	// Configure tool-specific properties.
 	// "customizations": {},
