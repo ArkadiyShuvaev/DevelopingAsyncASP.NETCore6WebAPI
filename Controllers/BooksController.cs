@@ -1,6 +1,7 @@
 using Entities;
 using Filters;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using Services;
 
 namespace Controllers;
@@ -18,7 +19,7 @@ public class BooksController : ControllerBase
 
     [HttpGet]
     [TypeFilter(typeof(BookResultFilter))]
-    public async Task<ActionResult<IEnumerable<Book>>> GetAllAsync()
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetAllAsync()
     {
         var books = await _booksRepository.GetAllAsync();
         return Ok(books);
@@ -26,7 +27,7 @@ public class BooksController : ControllerBase
 
     [HttpGet("{id}")]
     [TypeFilter(typeof(BookResultFilter))]
-    public async Task<ActionResult<Book>> GetAsync(int id)
+    public async Task<ActionResult<BookDto>> GetAsync(int id)
     {
         var book = await _booksRepository.GetAsync(id);
         if (book is null)
