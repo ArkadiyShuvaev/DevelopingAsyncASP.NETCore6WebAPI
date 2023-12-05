@@ -1,4 +1,5 @@
 using AutoMapper;
+using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -22,17 +23,16 @@ public class BookResultFilter : IAsyncResultFilter
             return;
         }
 
-        resultFromAction.Value = _mapper.Map<Models.BookDto>(resultFromAction.Value);
-
-        await next();
+        var resultFromActionValue = resultFromAction.Value;
+        if (resultFromActionValue is IEnumerable<Book> books)
+        {
+            resultFromAction.Value = _mapper.Map<IEnumerable<Models.BookDto>>(books);
+            await next();
+        }
+        else
+        {
+            resultFromAction.Value = _mapper.Map<Models.BookDto>(resultFromActionValue);
+            await next();
+        }
     }
-
-    // public override void OnResultExecuting(ResultExecutingContext context)
-    // {
-    //     var result = context.Result as ObjectResult;
-    //     if (result?.Value is Book book)
-    //     {
-    //         book.Title = book.Title.ToUpperInvariant();
-    //     }
-    // }
 }

@@ -17,6 +17,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet]
+    [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<IEnumerable<Book>>> GetAllAsync()
     {
         var books = await _booksRepository.GetAllAsync();
