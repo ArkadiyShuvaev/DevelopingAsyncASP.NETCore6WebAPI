@@ -11,5 +11,7 @@ public class BooksProfile : Profile
         CreateMap<Book, BookDto>()
             .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src =>
                 $"{src.Author.FirstName} {src.Author.LastName}"));
+
+        CreateMap<CreateBookDto, Book>();
     }
 }

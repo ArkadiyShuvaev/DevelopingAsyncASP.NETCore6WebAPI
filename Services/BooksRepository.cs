@@ -1,6 +1,7 @@
 using DbContexts;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace Services
 {
@@ -11,6 +12,14 @@ namespace Services
         public BooksRepository(BooksDbContext context)
         {
             _context = context;
+        }
+
+        public async Task<bool> CreateAsync(Book book)
+        {
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+
+            return book.Id > 1;
         }
 
         public IEnumerable<Book> GetAll()

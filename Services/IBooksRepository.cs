@@ -1,4 +1,5 @@
 using Entities;
+using Models;
 
 namespace Services
 {
@@ -23,5 +24,10 @@ namespace Services
         /// Returns a book by id.
         /// </summary>
         Book? GetBook(int id);
+
+        /// <summary>
+        /// Creates a new book.
+        /// </summary>
+        Task<bool> CreateAsync(Book book);
     }
 }

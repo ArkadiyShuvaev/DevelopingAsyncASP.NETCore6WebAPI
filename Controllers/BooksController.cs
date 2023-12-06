@@ -1,3 +1,5 @@
+using System.Net;
+using AutoMapper;
 using Entities;
 using Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,12 @@ namespace Controllers;
 public class BooksController : ControllerBase
 {
     private readonly IBooksRepository _booksRepository;
+    private readonly IMapper _mapper;
 
-    public BooksController(IBooksRepository booksRepository)
+    public BooksController(IBooksRepository booksRepository, IMapper mapper)
     {
         _booksRepository = booksRepository;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -25,7 +29,7 @@ public class BooksController : ControllerBase
         return Ok(books);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "GetBook")]
     [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<BookDto>> GetAsync(int id)
     {
@@ -36,5 +40,14 @@ public class BooksController : ControllerBase
         }
 
         return Ok(book);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Book>> CreateAsync([FromBody] CreateBookDto createBook)
+    {
+        var bookEntity = _mapper.Map<Book>(createBook);
+
+        await _booksRepository.CreateAsync(bookEntity);
+        return StatusCode((int)HttpStatusCode.Created, bookEntity);
     }
 }
