@@ -23,6 +23,7 @@
 		"wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.6.2.zip",
 		"unzip apache-jmeter-5.6.2.zip",
     "rm apache-jmeter-5.6.2.zip",
+		"dotnet tool install -g roslynator.dotnet.cli",
 		"dotnet tool install --global dotnet-ef --version 7.0.14",
 		"dotnet restore"
 	],
