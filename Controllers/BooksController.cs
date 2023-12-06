@@ -43,11 +43,13 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
+    [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<Book>> CreateAsync([FromBody] CreateBookDto createBook)
     {
         var bookEntity = _mapper.Map<Book>(createBook);
-
         await _booksRepository.CreateAsync(bookEntity);
-        return StatusCode((int)HttpStatusCode.Created, bookEntity);
+
+        var book = await _booksRepository.GetAsync(bookEntity.Id);
+        return StatusCode((int)HttpStatusCode.Created, book);
     }
 }
