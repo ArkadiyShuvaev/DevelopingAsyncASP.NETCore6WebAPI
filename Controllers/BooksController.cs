@@ -52,4 +52,14 @@ public class BooksController : ControllerBase
         var book = await _booksRepository.GetAsync(bookEntity.Id);
         return StatusCode((int)HttpStatusCode.Created, book);
     }
+
+    [HttpPost("bulk")]
+    [TypeFilter(typeof(BookResultFilter))]
+    public async Task<ActionResult<Book>> CreateBulkAsync([FromBody] IEnumerable<CreateBookDto> createBooks)
+    {
+        var bookEntities = _mapper.Map<IEnumerable<Book>>(createBooks);
+        await _booksRepository.CreateAsync(bookEntities);
+
+        return StatusCode((int)HttpStatusCode.Created);
+    }
 }

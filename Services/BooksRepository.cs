@@ -22,6 +22,18 @@ namespace Services
             return book.Id > 1;
         }
 
+        public async Task<bool> CreateAsync(IEnumerable<Book> bookEntities)
+        {
+            foreach (var book in bookEntities)
+            {
+                _context.Add(book);
+            }
+
+            var affectedRows = await _context.SaveChangesAsync();
+            return affectedRows > 0;
+        }
+
+
         public IEnumerable<Book> GetAll()
         {
             return _context.Books.Include(b => b.Author);

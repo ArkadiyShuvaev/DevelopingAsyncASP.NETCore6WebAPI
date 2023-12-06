@@ -29,5 +29,10 @@ namespace Services
         /// Creates a new book.
         /// </summary>
         Task<bool> CreateAsync(Book book);
+
+        /// <summary>
+        /// Creates a collection of books in bulk.
+        /// </summary>
+        Task<bool> CreateAsync(IEnumerable<Book> bookEntities);
     }
 }
