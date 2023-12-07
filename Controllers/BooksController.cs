@@ -62,4 +62,17 @@ public class BooksController : ControllerBase
 
         return StatusCode((int)HttpStatusCode.Created);
     }
+
+    [HttpGet("bulk")]
+    [TypeFilter(typeof(BookResultFilter))]
+    public async Task<ActionResult<Book>> GetBulkAsync([FromQuery] IEnumerable<int> bookIds)
+    {
+        var entities = await _booksRepository.GetAsync(bookIds);
+        if (entities?.Count() != bookIds.Count())
+        {
+            return NotFound();
+        }
+
+        return Ok(entities);
+    }
 }

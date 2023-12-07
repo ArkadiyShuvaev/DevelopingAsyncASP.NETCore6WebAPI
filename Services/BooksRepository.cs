@@ -51,6 +51,13 @@ namespace Services
                                        .FirstOrDefaultAsync(b => b.Id == id);
         }
 
+        public async Task<IEnumerable<Book>> GetAsync(IEnumerable<int> bookIds)
+        {
+            return await _context.Books.Include(b => b.Author)
+                                       .Where(b => bookIds.Contains(b.Id))
+                                       .ToListAsync();
+        }
+
         public Book? GetBook(int id)
         {
             return _context.Books.Include(b => b.Author)

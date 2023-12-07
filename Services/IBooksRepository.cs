@@ -34,5 +34,10 @@ namespace Services
         /// Creates a collection of books in bulk.
         /// </summary>
         Task<bool> CreateAsync(IEnumerable<Book> bookEntities);
+
+        /// <summary>
+        /// Returns a collection of books for the given ids.
+        /// </summary>
+        Task<IEnumerable<Book>> GetAsync(IEnumerable<int> bookIds);
     }
 }
