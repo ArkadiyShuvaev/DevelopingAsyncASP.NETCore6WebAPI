@@ -30,7 +30,6 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet("get-stream")]
-    //[TypeFilter(typeof(BookResultFilter))]
     public async IAsyncEnumerable<BookDto> GetBookStreamAsync()
     {
         await foreach (var book in _booksRepository.GetAllAsAsync())
