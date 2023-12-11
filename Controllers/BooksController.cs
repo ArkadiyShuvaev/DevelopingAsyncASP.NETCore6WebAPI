@@ -54,16 +54,16 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost("bulk")]
-    [TypeFilter(typeof(BookResultFilter))]
-    public async Task<ActionResult<Book>> CreateBulkAsync([FromBody] IEnumerable<CreateBookDto> createBooks)
+    public async Task<ActionResult<IEnumerable<Book>>> CreateBulkAsync([FromBody] IEnumerable<CreateBookDto> createBooks)
     {
         var bookEntities = _mapper.Map<IEnumerable<Book>>(createBooks);
         await _booksRepository.CreateAsync(bookEntities);
 
-        return StatusCode((int)HttpStatusCode.Created);
+        var bookIds = bookEntities.Select(b => b.Id).ToList();
+        return StatusCode((int)HttpStatusCode.Created, bookIds);
     }
 
-    [HttpGet("bulk")]
+    [HttpGet("bulk", Name = nameof(GetBulkAsync))]
     [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<Book>> GetBulkAsync([FromQuery] IEnumerable<int> bookIds)
     {
