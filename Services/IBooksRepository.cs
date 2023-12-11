@@ -21,6 +21,12 @@ namespace Services
         IEnumerable<Book> GetAll();
 
         /// <summary>
+        /// Returns an async collection of books.
+        /// </summary>
+        /// <returns></returns>
+        IAsyncEnumerable<Book> GetAllAsAsync();
+
+        /// <summary>
         /// Returns a book by id.
         /// </summary>
         Book? GetBook(int id);

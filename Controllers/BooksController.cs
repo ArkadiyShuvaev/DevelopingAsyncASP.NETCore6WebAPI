@@ -29,6 +29,20 @@ public class BooksController : ControllerBase
         return Ok(books);
     }
 
+    [HttpGet("get-stream")]
+    //[TypeFilter(typeof(BookResultFilter))]
+    public async IAsyncEnumerable<BookDto> GetBookStreamAsync()
+    {
+        await foreach (var book in _booksRepository.GetAllAsAsync())
+        {
+            // Add a delay to visually see the effect of streaming
+            await Task.Delay(500);
+
+            var bookDto = _mapper.Map<BookDto>(book);
+            yield return bookDto;
+        }
+    }
+
     [HttpGet("{id}", Name = "GetBook")]
     [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<BookDto>> GetAsync(int id)

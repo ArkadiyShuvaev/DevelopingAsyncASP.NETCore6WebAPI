@@ -45,6 +45,11 @@ namespace Services
                                        .ToListAsync();
         }
 
+        public IAsyncEnumerable<Book> GetAllAsAsync()
+        {
+            return _context.Books.Include(b => b.Author).AsAsyncEnumerable<Book>();
+        }
+
         public async Task<Book?> GetAsync(int id)
         {
             return await _context.Books.Include(b => b.Author)
