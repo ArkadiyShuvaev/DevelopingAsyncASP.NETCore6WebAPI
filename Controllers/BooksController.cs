@@ -1,4 +1,5 @@
 using System.Net;
+using System.Linq;
 using AutoMapper;
 using Entities;
 using Filters;
@@ -32,12 +33,15 @@ public class BooksController : ControllerBase
     [HttpGet("get-stream")]
     public async IAsyncEnumerable<BookDto> GetBookStreamAsync()
     {
-        await foreach (var book in _booksRepository.GetAllAsAsync())
+        // For the sake of testing the library System.Linq.Async
+        var books = _booksRepository.GetAllAsAsync().Where(x => x.Id > 0);
+        await foreach (var book in books)
         {
             // Add a delay to visually see the effect of streaming
             await Task.Delay(500);
 
             var bookDto = _mapper.Map<BookDto>(book);
+            Console.WriteLine($"Sending book {bookDto.Title}.");
             yield return bookDto;
         }
     }
