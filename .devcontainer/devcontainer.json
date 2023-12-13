@@ -34,7 +34,9 @@
 				"ms-dotnettools.csharp",
 				"ms-dotnettools.vscode-dotnet-runtime",
 				"shardulm94.trailing-spaces",
-				"josefpihrt-vscode.roslynator"
+				"josefpihrt-vscode.roslynator",
+				"GitHub.copilot-chat",
+				"GitHub.copilot"
 			]
 		}
 	}
