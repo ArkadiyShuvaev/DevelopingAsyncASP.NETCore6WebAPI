@@ -32,7 +32,9 @@
 			"extensions": [
 				"ms-dotnettools.csdevkit",
 				"ms-dotnettools.csharp",
-				"ms-dotnettools.vscode-dotnet-runtime"
+				"ms-dotnettools.vscode-dotnet-runtime",
+				"shardulm94.trailing-spaces",
+				"josefpihrt-vscode.roslynator"
 			]
 		}
 	}
