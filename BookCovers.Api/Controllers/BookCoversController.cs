@@ -6,10 +6,6 @@ namespace BookCovers.Api.Controllers;
 [Route("api/[controller]")]
 public class BookCoversController : ControllerBase
 {
-    BookCoversController()
-    {
-    }
-
     [HttpGet("{id}")]
     public async Task<IActionResult> GetBookCoverAsync(int id, bool returnFault = false)
     {
