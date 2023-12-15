@@ -6,6 +6,7 @@ using Filters;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
+using Books.Api.Services;
 
 namespace Controllers;
 
@@ -15,11 +16,15 @@ public class BooksController : ControllerBase
 {
     private readonly IBooksRepository _booksRepository;
     private readonly IMapper _mapper;
+    private readonly IBookCoversProvider _bookCoversProvider;
 
-    public BooksController(IBooksRepository booksRepository, IMapper mapper)
+    public BooksController(IBooksRepository booksRepository,
+                           IMapper mapper,
+                           IBookCoversProvider bookCoversProvider)
     {
         _booksRepository = booksRepository;
         _mapper = mapper;
+        _bookCoversProvider = bookCoversProvider;
     }
 
     [HttpGet]
@@ -55,6 +60,8 @@ public class BooksController : ControllerBase
         {
             return NotFound();
         }
+
+        var bookCover = await _bookCoversProvider.GetBookCoverAsync(book.Id);
 
         return Ok(book);
     }
