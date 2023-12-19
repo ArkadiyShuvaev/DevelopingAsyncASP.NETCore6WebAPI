@@ -1,3 +1,5 @@
+using Books.Api.Models;
+
 namespace Models;
 
 public class BookDto
@@ -7,4 +9,5 @@ public class BookDto
     public required string Description { get; set; }
     public int AuthorId { get; set; }
     public required string AuthorName { get; set; }
+    public BookCoverDto[]? BookCovers { get; set; }
 }

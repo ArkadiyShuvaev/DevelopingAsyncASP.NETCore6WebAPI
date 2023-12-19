@@ -52,7 +52,6 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetBook")]
-    [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<BookDto>> GetAsync(int id)
     {
         var book = await _booksRepository.GetAsync(id);
@@ -62,8 +61,14 @@ public class BooksController : ControllerBase
         }
 
         var bookCover = await _bookCoversProvider.GetBookCoverAsync(book.Id);
+        var bookDto = _mapper.Map<BookDto>(book);
 
-        return Ok(book);
+        if (bookCover is not null)
+        {
+            bookDto.BookCovers = new[] { bookCover };
+        }
+
+        return Ok(bookDto);
     }
 
     [HttpPost]
