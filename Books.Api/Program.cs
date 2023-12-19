@@ -13,8 +13,8 @@ builder.Services.AddHttpClient("BookCoversClient", client =>
     {
         client.BaseAddress = new Uri("http://localhost:8001");
     })
-    .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
-    .AddTransientHttpErrorPolicy(builder => builder.CircuitBreakerAsync(2, TimeSpan.FromSeconds(10)));
+    .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(1.2, retryAttempt))));
+    //.AddTransientHttpErrorPolicy(builder => builder.CircuitBreakerAsync(2, TimeSpan.FromSeconds(60)));
 
 
 builder.Services.AddControllers();

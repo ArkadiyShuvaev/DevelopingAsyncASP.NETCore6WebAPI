@@ -6,11 +6,21 @@ namespace BookCovers.Api.Controllers;
 [Route("api/[controller]")]
 public class BookCoversController : ControllerBase
 {
+    private readonly ILogger<BookCoversController> _logger;
+
+    public BookCoversController(ILogger<BookCoversController> logger)
+    {
+        _logger = logger;
+    }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetBookCoverAsync(int id, bool returnFault = false)
     {
+        _logger.LogInformation("Getting book cover {id}.", id);
+
         if (returnFault)
         {
+            _logger.LogWarning("Returning a fake error for book cover {id}.", id);
+
             await Task.Delay(100);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }

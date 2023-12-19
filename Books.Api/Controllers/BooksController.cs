@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 using Books.Api.Services;
+using Books.Api.Models;
 
 namespace Controllers;
 
@@ -65,7 +66,8 @@ public class BooksController : ControllerBase
 
         if (bookCover is not null)
         {
-            bookDto.BookCovers = new[] { bookCover };
+            var bookCoverDto = _mapper.Map<BookCoverDto>(bookCover);
+            bookDto.BookCovers = new[] { bookCoverDto };
         }
 
         return Ok(bookDto);
@@ -101,6 +103,8 @@ public class BooksController : ControllerBase
         {
             return NotFound();
         }
+
+        var bookCovers = await _bookCoversProvider.GetBookCoversProcessOneByOneAsync();
 
         return Ok(entities);
     }
