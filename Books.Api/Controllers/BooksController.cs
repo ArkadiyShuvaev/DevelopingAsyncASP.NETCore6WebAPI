@@ -96,7 +96,7 @@ public class BooksController : ControllerBase
 
     [HttpGet("bulk", Name = nameof(GetBulkAsync))]
     [TypeFilter(typeof(BookResultFilter))]
-    public async Task<ActionResult<Book>> GetBulkAsync([FromQuery] IEnumerable<int> bookIds)
+    public async Task<ActionResult<Book>> GetBulkAsync([FromQuery] IEnumerable<int> bookIds, CancellationToken ct)
     {
         var entities = await _booksRepository.GetAsync(bookIds);
         if (entities?.Count() != bookIds.Count())
@@ -104,7 +104,7 @@ public class BooksController : ControllerBase
             return NotFound();
         }
 
-        var bookCovers = await _bookCoversProvider.GetBookCoversProcessOneByOneAsync();
+        var bookCovers = await _bookCoversProvider.GetBookCoversProcessOneByOneAsync(bookIds, ct);
 
         return Ok(entities);
     }

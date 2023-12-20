@@ -28,13 +28,14 @@ public class BookCoversProvider : IBookCoversProvider
         return null;
     }
 
-    public async Task<IEnumerable<BookCoverResponse>> GetBookCoversProcessOneByOneAsync()
+    public async Task<IEnumerable<BookCoverResponse>> GetBookCoversProcessOneByOneAsync(IEnumerable<int> bookIds,
+                                                                                        CancellationToken ct)
     {
         var requestUris = new List<string>()
         {
             "/api/bookcovers/1",
             "/api/bookcovers/2",
-            "/api/bookcovers/3?returnFault=true", // this will return a 500
+            //"/api/bookcovers/3?returnFault=true", // this will return a 500
             "/api/bookcovers/4"
         };
 
@@ -48,16 +49,19 @@ public class BookCoversProvider : IBookCoversProvider
 
         foreach (var requestUri in requestUris)
         {
-            var response = await _httpClient.GetAsync(requestUri, cts.Token);
+            var response = await _httpClient.GetAsync(requestUri, ct);
             if (response.IsSuccessStatusCode)
             {
-                var jsonString = await response.Content.ReadAsStringAsync(cts.Token);
+                var jsonString = await response.Content.ReadAsStringAsync(ct);
                 var bookCover = JsonSerializer.Deserialize<BookCoverResponse>(jsonString, jsonSerializerOptions);
 
                 if (bookCover != null)
                 {
                     bookCovers.Add(bookCover);
                 }
+
+                // to see the effect
+                await Task.Delay(500);
 
                 continue;
             }

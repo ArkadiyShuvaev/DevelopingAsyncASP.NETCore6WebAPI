@@ -9,5 +9,5 @@ public interface IBookCoversProvider
     /// <summary>
     /// Returns a collection of book covers one by one.
     /// </summary>
-    Task<IEnumerable<BookCoverResponse>> GetBookCoversProcessOneByOneAsync();
+    Task<IEnumerable<BookCoverResponse>> GetBookCoversProcessOneByOneAsync(IEnumerable<int> bookIds, CancellationToken ct);
 }
