@@ -6,10 +6,12 @@ namespace Books.Api.Services;
 public class BookCoversProvider : IBookCoversProvider
 {
     private readonly HttpClient _httpClient;
+    private readonly ILogger<BookCoversProvider> _logger;
 
-    public BookCoversProvider(IHttpClientFactory httpClientFactory)
+    public BookCoversProvider(IHttpClientFactory httpClientFactory, ILogger<BookCoversProvider> logger)
     {
         _httpClient = httpClientFactory.CreateClient("BookCoversClient");
+        _logger = logger;
     }
 
     public async Task<BookCoverResponse?> GetBookCoverAsync(int id)
@@ -40,6 +42,8 @@ public class BookCoversProvider : IBookCoversProvider
         };
 
         using var cts = new CancellationTokenSource();
+        using var lcts = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, ct);
+
         var bookCovers = new List<BookCoverResponse>();
 
         var jsonSerializerOptions = new JsonSerializerOptions
@@ -49,10 +53,12 @@ public class BookCoversProvider : IBookCoversProvider
 
         foreach (var requestUri in requestUris)
         {
-            var response = await _httpClient.GetAsync(requestUri, ct);
+            _logger.LogInformation("Getting book cover from: {RequestUri}.", requestUri);
+
+            var response = await _httpClient.GetAsync(requestUri, lcts.Token);
             if (response.IsSuccessStatusCode)
             {
-                var jsonString = await response.Content.ReadAsStringAsync(ct);
+                var jsonString = await response.Content.ReadAsStringAsync(lcts.Token);
                 var bookCover = JsonSerializer.Deserialize<BookCoverResponse>(jsonString, jsonSerializerOptions);
 
                 if (bookCover != null)
@@ -66,7 +72,7 @@ public class BookCoversProvider : IBookCoversProvider
                 continue;
             }
 
-            cts.Cancel();
+            lcts.Cancel();
         }
 
         return bookCovers;
