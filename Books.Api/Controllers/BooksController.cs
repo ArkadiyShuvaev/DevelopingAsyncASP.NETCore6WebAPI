@@ -56,13 +56,14 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetBook")]
-    public async Task<ActionResult<BookDto>> GetAsync(int id)
+    public async Task<ActionResult<BookDto>> GetAsync_WrongApproaches(int id)
     {
         _logger.LogInformation("The thread id of the method '{MethodName}' is '{ThreadId}'.",
-            nameof(GetAsync),
+            nameof(GetAsync_WrongApproaches),
             Thread.CurrentThread.ManagedThreadId);
 
-        var book = await _booksRepository.GetAsync(id);
+        // Blocking asychronous code
+        var book = _booksRepository.GetAsync(id).Result;
         if (book is null)
         {
             return NotFound();
@@ -81,6 +82,7 @@ public class BooksController : ControllerBase
         return Ok(bookDto);
     }
 
+    // This is a wrong approach because it will create one extra thread.
     private Task<int> GetAmountOfPages_WrongApproach(int id)
     {
         return Task.Run(() =>
