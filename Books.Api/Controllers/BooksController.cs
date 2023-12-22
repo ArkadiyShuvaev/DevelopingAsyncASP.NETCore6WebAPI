@@ -98,14 +98,21 @@ public class BooksController : ControllerBase
     [TypeFilter(typeof(BookResultFilter))]
     public async Task<ActionResult<Book>> GetBulkAsync([FromQuery] IEnumerable<int> bookIds, CancellationToken ct)
     {
-        var entities = await _booksRepository.GetAsync(bookIds);
-        if (entities?.Count() != bookIds.Count())
+        try
         {
-            return NotFound();
+            var entities = await _booksRepository.GetAsync(bookIds);
+            if (entities?.Count() != bookIds.Count())
+            {
+                return NotFound();
+            }
+
+            var bookCovers = await _bookCoversProvider.GetBookCoversProcessOneByOneAsync(bookIds, ct);
+
+            return Ok(entities);
         }
-
-        var bookCovers = await _bookCoversProvider.GetBookCoversProcessOneByOneAsync(bookIds, ct);
-
-        return Ok(entities);
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 }
