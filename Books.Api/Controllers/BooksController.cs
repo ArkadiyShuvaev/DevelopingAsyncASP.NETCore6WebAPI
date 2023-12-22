@@ -18,14 +18,17 @@ public class BooksController : ControllerBase
     private readonly IBooksRepository _booksRepository;
     private readonly IMapper _mapper;
     private readonly IBookCoversProvider _bookCoversProvider;
+    private readonly ILogger<BooksController> _logger;
 
     public BooksController(IBooksRepository booksRepository,
                            IMapper mapper,
-                           IBookCoversProvider bookCoversProvider)
+                           IBookCoversProvider bookCoversProvider,
+                           ILogger<BooksController> logger)
     {
         _booksRepository = booksRepository;
         _mapper = mapper;
         _bookCoversProvider = bookCoversProvider;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -55,6 +58,10 @@ public class BooksController : ControllerBase
     [HttpGet("{id}", Name = "GetBook")]
     public async Task<ActionResult<BookDto>> GetAsync(int id)
     {
+        _logger.LogInformation("The thread id of the method '{MethodName}' is '{ThreadId}'.",
+            nameof(GetAsync),
+            Thread.CurrentThread.ManagedThreadId);
+
         var book = await _booksRepository.GetAsync(id);
         if (book is null)
         {
@@ -63,6 +70,7 @@ public class BooksController : ControllerBase
 
         var bookCover = await _bookCoversProvider.GetBookCoverAsync(book.Id);
         var bookDto = _mapper.Map<BookDto>(book);
+        var amountOfPages = await GetAmountOfPages_WrongApproach(id);
 
         if (bookCover is not null)
         {
@@ -71,6 +79,18 @@ public class BooksController : ControllerBase
         }
 
         return Ok(bookDto);
+    }
+
+    private Task<int> GetAmountOfPages_WrongApproach(int id)
+    {
+        return Task.Run(() =>
+        {
+            _logger.LogInformation("The thread id of the method '{MethodName}' is '{ThreadId}'.",
+                nameof(GetAmountOfPages_WrongApproach),
+                Thread.CurrentThread.ManagedThreadId);
+
+            return Books.Legacy.PageCalculator.CalculateBookPages(id);
+        });
     }
 
     [HttpPost]

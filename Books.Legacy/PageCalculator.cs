@@ -7,7 +7,7 @@ public class PageCalculator
     /// <summary>
     /// Full CPU load for 5 seconds
     /// </summary>
-    public static int CalculateBookPages(Guid bookId)
+    public static int CalculateBookPages(int bookId)
     {
         var watch = new Stopwatch();
         watch.Start();

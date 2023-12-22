@@ -1,4 +1,6 @@
 using AutoMapper;
+using Books.Api.Models;
+using Books.Api.Models.External;
 using Entities;
 using Models;
 
@@ -13,5 +15,6 @@ public class BooksProfile : Profile
                 $"{src.Author.FirstName} {src.Author.LastName}"));
 
         CreateMap<CreateBookDto, Book>();
+        CreateMap<BookCoverResponse, BookCoverDto>();
     }
 }
